@@ -51,7 +51,9 @@ function Read-GsScreen {
 
     $sw = [System.Diagnostics.Stopwatch]::StartNew()
     try {
-        $rowList = if ($Row) { @($Row) } else { 1..$Session.Rows }
+        # @() must wrap the whole if-expression: statement output is unrolled
+        # on assignment, so a single row would otherwise land as a scalar.
+        $rowList = @(if ($Row) { $Row } else { 1..$Session.Rows })
         $results = foreach ($r in $rowList) {
             $len = if ($Length) { [int]$Length } else { [int]$Session.Cols - ($Col - 1) }
             if ($len -lt 1) { $len = 1 }
