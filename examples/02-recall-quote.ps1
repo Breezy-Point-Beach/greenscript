@@ -2,7 +2,7 @@
 # Quote Worksheet that results.
 #
 # Copyright 2026 Breezy Point Beach, LLC
-# Licensed under the Apache License, Version 2.0
+# Licensed under the MIT License
 #
 # This script sends keystrokes. The approval gate on Send-GsKeys is active, so
 # every send prompts unless you pass -Confirm:$false. Nothing destructive is

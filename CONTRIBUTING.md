@@ -82,4 +82,4 @@ disclosure address before publishing).
 ## License
 
 By submitting a contribution you agree it is licensed under the project's
-Apache 2.0 license.
+MIT license.

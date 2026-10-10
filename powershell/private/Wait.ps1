@@ -1,7 +1,7 @@
 # Wait.ps1 - Wait-GsText.
 #
 # Copyright 2026 Breezy Point Beach, LLC
-# Licensed under the Apache License, Version 2.0
+# Licensed under the MIT License
 #
 # Thin wrapper over BZWhll.WaitForText that returns a structured result
 # instead of a raw status code.

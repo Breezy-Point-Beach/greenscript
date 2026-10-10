@@ -1,7 +1,7 @@
 # Interop.ps1 - C# shim for BZWhll COM calls that take ByRef parameters.
 #
 # Copyright 2026 Breezy Point Beach, LLC
-# Licensed under the Apache License, Version 2.0
+# Licensed under the MIT License
 #
 # BZWhll.WhllObj exposes several late-bound methods whose signatures use VB6
 # ByRef conventions:

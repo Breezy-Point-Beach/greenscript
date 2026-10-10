@@ -2,7 +2,7 @@
 # and type each row into a form, with per-row approval.
 #
 # Copyright 2026 Breezy Point Beach, LLC
-# Licensed under the Apache License, Version 2.0
+# Licensed under the MIT License
 #
 # This script is a template. It does NOT assume a specific CDK tax-rate form
 # layout; it shows the greenscript idioms for safe bulk entry:

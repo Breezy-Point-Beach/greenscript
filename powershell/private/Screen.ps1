@@ -1,7 +1,7 @@
 # Screen.ps1 - Read-GsScreen and Get-GsCursor.
 #
 # Copyright 2026 Breezy Point Beach, LLC
-# Licensed under the Apache License, Version 2.0
+# Licensed under the MIT License
 #
 # Read-GsScreen returns the full terminal buffer as an array of row objects.
 # Each row has Row (1-based), Col (1 by default), Length (session Cols by

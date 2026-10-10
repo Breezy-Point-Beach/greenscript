@@ -1,7 +1,7 @@
 # Audit.ps1 - JSONL audit logger.
 #
 # Copyright 2026 Breezy Point Beach, LLC
-# Licensed under the Apache License, Version 2.0
+# Licensed under the MIT License
 #
 # Every cmdlet that reads from or writes to the terminal appends one JSONL
 # record to the audit log. The log lives at a per-user default under

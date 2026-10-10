@@ -1,7 +1,7 @@
 # Popup.ps1 - LegaSuite / embedded-browser popup reader via IHTMLDocument2.
 #
 # Copyright 2026 Breezy Point Beach, LLC
-# Licensed under the Apache License, Version 2.0
+# Licensed under the MIT License
 #
 # The CDK Drive client (and other LegaSuite-based GUIs) renders host-launched
 # popups in embedded Internet Explorer controls. Each such control responds to

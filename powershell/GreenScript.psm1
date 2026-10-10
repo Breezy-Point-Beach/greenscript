@@ -1,7 +1,7 @@
 # GreenScript.psm1 - module entry point.
 #
 # Copyright 2026 Breezy Point Beach, LLC
-# Licensed under the Apache License, Version 2.0
+# Licensed under the MIT License
 #
 # Loads the C# interop shim once, then dot-sources each private file.
 # Each private file defines one slice of the public API.

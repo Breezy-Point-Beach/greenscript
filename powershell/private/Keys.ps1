@@ -1,7 +1,7 @@
 # Keys.ps1 - Send-GsKeys with approval gate and forbidden-key policy.
 #
 # Copyright 2026 Breezy Point Beach, LLC
-# Licensed under the Apache License, Version 2.0
+# Licensed under the MIT License
 #
 # Send-GsKeys uses PowerShell's standard SupportsShouldProcess machinery, so
 # -WhatIf shows what would be sent and -Confirm prompts before sending. The

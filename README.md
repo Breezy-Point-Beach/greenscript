@@ -5,7 +5,7 @@ their GUI faceplates from PowerShell and VBA, with approval gates and audit
 logging built in, using only the runtimes shipped with Windows.
 
 **Status:** v0.1 — early. API will change.
-**License:** [Apache 2.0](LICENSE)
+**License:** [MIT](LICENSE)
 
 ## What it is
 

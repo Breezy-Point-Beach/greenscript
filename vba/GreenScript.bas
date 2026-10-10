@@ -3,7 +3,7 @@ Attribute VB_Name = "GreenScript"
 ' BlueZone VBA or Excel/Access VBA.
 '
 ' Copyright 2026 Breezy Point Beach, LLC
-' Licensed under the Apache License, Version 2.0
+' Licensed under the MIT License
 '
 ' This module is the VBA counterpart to the PowerShell cmdlets in
 ' ../powershell/. It exposes a thin wrapper around BZWhll.WhllObj plus an

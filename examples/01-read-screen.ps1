@@ -1,7 +1,7 @@
 # 01-read-screen.ps1 - connect, read all rows, print them, release.
 #
 # Copyright 2026 Breezy Point Beach, LLC
-# Licensed under the Apache License, Version 2.0
+# Licensed under the MIT License
 #
 # Minimum viable use of greenscript. Nothing is sent to the host; this script
 # is strictly read-only.

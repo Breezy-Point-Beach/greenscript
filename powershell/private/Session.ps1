@@ -1,7 +1,7 @@
 # Session.ps1 - Connect / Disconnect / session handle shape.
 #
 # Copyright 2026 Breezy Point Beach, LLC
-# Licensed under the Apache License, Version 2.0
+# Licensed under the MIT License
 #
 # A GreenScript session handle is a plain [pscustomobject] with:
 #   Tag       - string, cosmetic identifier used in audit records
