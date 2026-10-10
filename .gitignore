@@ -1,0 +1,43 @@
+# greenscript .gitignore
+
+# Audit logs — generated at runtime, never committed.
+logs/
+*.jsonl
+
+# Local test / scratch files
+_scratch/
+*.local.ps1
+
+# Build artifacts (future: compiled .NET .exe, MSI package, etc.)
+bin/
+obj/
+*.msi
+*.exe
+
+# PowerShell package cache
+.psm_cache/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Secrets, credentials, environment overrides (none expected, but belt-and-suspenders)
+.env
+.env.*
+*.secret
+*.key
+*.pem
+
+# VBA editor backups
+*.bas.bak
+*.frm.bak
+*.frx
+
+# BlueZone session artifacts a dealer might accidentally drop in the tree
+*.zsl
+*.bvp

@@ -1,0 +1,78 @@
+# CI — PSScriptAnalyzer + minimal syntax check.
+#
+# Runs on every push and pull request to main.
+#
+# Note: the module cannot be *functionally* tested in CI without a BlueZone
+# installation and a live terminal session, neither of which exist on GitHub
+# runners. CI therefore enforces:
+#   1. The module parses cleanly on Windows PowerShell 5.1.
+#   2. All .ps1 and .psm1 files parse without errors.
+#   3. PSScriptAnalyzer runs clean (warnings allowed with explicit reason).
+# Behavioral tests against a mock COM shim live in tests/ (not shipped in
+# v0.1) and will be wired into this workflow when they exist.
+
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  analyze:
+    name: parse + PSScriptAnalyzer
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install PSScriptAnalyzer
+        shell: powershell
+        run: |
+          Install-Module -Name PSScriptAnalyzer -Scope CurrentUser -Force -SkipPublisherCheck
+          Import-Module PSScriptAnalyzer
+
+      - name: Parse all .ps1 and .psm1 files
+        shell: powershell
+        run: |
+          $errors = @()
+          Get-ChildItem -Recurse -Include *.ps1,*.psm1 -Path . | ForEach-Object {
+              $tokens = $null
+              $errs = $null
+              [void][System.Management.Automation.Language.Parser]::ParseFile(
+                  $_.FullName, [ref]$tokens, [ref]$errs)
+              if ($errs.Count -gt 0) {
+                  Write-Host "ERROR in $($_.FullName):"
+                  $errs | ForEach-Object { Write-Host "  $_" }
+                  $errors += $errs
+              }
+          }
+          if ($errors.Count -gt 0) { exit 1 }
+
+      - name: Validate module manifest
+        shell: powershell
+        run: |
+          $m = Test-ModuleManifest -Path .\powershell\GreenScript.psd1
+          Write-Host ("Module: {0} v{1}" -f $m.Name, $m.Version)
+          Write-Host ("Author: {0}" -f $m.Author)
+          Write-Host ("Exported: {0}" -f ($m.ExportedFunctions.Keys -join ', '))
+
+      - name: PSScriptAnalyzer
+        shell: powershell
+        run: |
+          $results = Invoke-ScriptAnalyzer -Path .\powershell\ -Recurse `
+              -Severity @('Error','Warning') `
+              -ExcludeRule PSAvoidUsingPositionalParameters,PSUseShouldProcessForStateChangingFunctions
+          if ($results) {
+              $results | Format-Table -AutoSize
+              $errors = @($results | Where-Object { $_.Severity -eq 'Error' })
+              if ($errors.Count -gt 0) {
+                  Write-Host "Analyzer found $($errors.Count) error(s)." -ForegroundColor Red
+                  exit 1
+              } else {
+                  Write-Host "Analyzer found warnings only; not failing build." -ForegroundColor Yellow
+              }
+          } else {
+              Write-Host "Analyzer: clean." -ForegroundColor Green
+          }
