@@ -151,7 +151,9 @@ Private Sub GsAudit(ByVal s As Object, ByVal action As String, _
     path = dir & "\greenscript-" & Format(Now, "yyyymmdd") & ".jsonl"
 
     ' Minimal JSON by hand; escape backslash and double-quote only.
-    line = "{""ts"":""" & Format(Now, "yyyy-mm-ddThh:nn:ss") & "Z""" & _
+    ' Local time (no Z suffix): VBA has no in-box UTC without Win32 calls.
+    ' The backslash escapes the literal T in a VBA format string.
+    line = "{""ts"":""" & Format(Now, "yyyy-mm-dd\Thh:nn:ss") & """" & _
            ",""session"":""" & JEsc(tag) & """" & _
            ",""action"":""" & JEsc(action) & """" & _
            ",""args"":""" & JEsc(args) & """" & _

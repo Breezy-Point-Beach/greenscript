@@ -15,14 +15,15 @@ $ErrorActionPreference = 'Stop'
 # below runs once at import. If the user wants to drive a non-COM backend
 # (e.g. pure HLLAPI via ehlapi64.dll in a future release) this restriction
 # will be scoped per-cmdlet rather than enforced at import.
-if ([System.IntPtr]::Size -ne 4) {
-    Write-Warning (@(
+if ([System.IntPtr]::Size -ne 4 -and -not $env:GREENSCRIPT_ALLOW_64BIT) {
+    $msg = @(
         'GreenScript detected a 64-bit PowerShell host (pointer size {0}).'
-        'The BZWhll.WhllObj COM server is 32-bit; CreateObject will fail here.'
+        'The BZWhll.WhllObj COM server is 32-bit; Connect-GsSession will fail here.'
+        'The popup cmdlets (Get-GsPopup / Read-GsPopup) work on either bitness.'
         'Re-run under C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe,'
-        'or set $env:GREENSCRIPT_ALLOW_64BIT=1 to suppress this warning and'
-        'rely on non-COM drivers only.'
-    ) -join ' ' -f [System.IntPtr]::Size)
+        'or set $env:GREENSCRIPT_ALLOW_64BIT=1 to silence this warning.'
+    ) -join ' '
+    Write-Warning ($msg -f [System.IntPtr]::Size)
 }
 
 $script:ModuleRoot = Split-Path -Parent $MyInvocation.MyCommand.Path

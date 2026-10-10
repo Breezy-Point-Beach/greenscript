@@ -99,11 +99,6 @@ BlueZone is not installed, or its COM registration got clobbered. Re-run the
 BlueZone installer. On CDK Drive installs the registration is handled by the
 Drive installer; a Drive repair usually fixes it.
 
-**`PSScriptAnalyzer` warns about `$Args`**
-`Args` is used as a parameter name in `Write-GsAudit`. The analyzer flags it
-because `$args` is also an automatic variable. It is intentional; add a
-suppression comment in your fork if the warning is noisy in your CI.
-
 **Audit log is in an unexpected location**
 By default it is `%LOCALAPPDATA%\GreenScript\logs\greenscript-YYYYMMDD.jsonl`.
 Override with `Set-GsAuditPath -Path 'D:\logs\myrun.jsonl'`.

@@ -23,13 +23,13 @@ function Read-GsScreen {
     The session handle returned by Connect-GsSession.
 
     .PARAMETER Row
-    1-based row to read. Omit to read all rows (default).
+    1-based row to read. 0 (the default) reads every row.
 
     .PARAMETER Col
     1-based starting column. Default 1.
 
     .PARAMETER Length
-    Number of characters to read. Default: full session width minus (Col - 1).
+    Number of characters to read. 0 (the default) reads to the end of the row.
 
     .EXAMPLE
     Read-GsScreen -Session $s | Format-Table Row, Text
@@ -44,9 +44,9 @@ function Read-GsScreen {
     [OutputType([pscustomobject[]])]
     param(
         [Parameter(Mandatory)] [pscustomobject] $Session,
-        [ValidateRange(1, 100)] [Nullable[int]] $Row,
+        [ValidateRange(0, 100)] [int] $Row = 0,
         [ValidateRange(1, 500)] [int] $Col = 1,
-        [ValidateRange(1, 500)] [Nullable[int]] $Length
+        [ValidateRange(0, 500)] [int] $Length = 0
     )
 
     $sw = [System.Diagnostics.Stopwatch]::StartNew()
@@ -65,7 +65,7 @@ function Read-GsScreen {
         }
         $sw.Stop()
         Write-GsAudit -Session $Session -Action 'read' `
-            -Args @{ row = $Row; col = $Col; length = $Length; rows = $rowList.Count } `
+            -Arguments @{ row = $Row; col = $Col; length = $Length; rows = $rowList.Count } `
             -Result @{ chars = ($results | Measure-Object -Property Length -Sum).Sum } `
             -DurationMs $sw.ElapsedMilliseconds -Ok $true
         return $results
@@ -73,7 +73,7 @@ function Read-GsScreen {
     catch {
         $sw.Stop()
         Write-GsAudit -Session $Session -Action 'read' `
-            -Args @{ row = $Row; col = $Col; length = $Length } `
+            -Arguments @{ row = $Row; col = $Col; length = $Length } `
             -DurationMs $sw.ElapsedMilliseconds -Ok $false `
             -ErrorMessage $_.Exception.Message
         throw

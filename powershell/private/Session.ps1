@@ -66,7 +66,7 @@ function Connect-GsSession {
         }
 
         Write-GsAudit -Session $session -Action 'connect' `
-            -Args @{ sessionName = $SessionName; rows = $Rows; cols = $Cols } `
+            -Arguments @{ sessionName = $SessionName; rows = $Rows; cols = $Cols } `
             -Result @{ tag = $session.Tag } `
             -DurationMs $sw.ElapsedMilliseconds -Ok $true
 
@@ -75,7 +75,7 @@ function Connect-GsSession {
     catch {
         $sw.Stop()
         Write-GsAudit -Session $null -Action 'connect' `
-            -Args @{ sessionName = $SessionName } `
+            -Arguments @{ sessionName = $SessionName } `
             -DurationMs $sw.ElapsedMilliseconds -Ok $false `
             -ErrorMessage $_.Exception.Message
         throw

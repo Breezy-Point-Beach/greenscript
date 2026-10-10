@@ -64,7 +64,7 @@ function Send-GsKeys {
     $hit = @()
     if ($ForbiddenKeys -and $ForbiddenKeys.Count -gt 0) {
         foreach ($f in $ForbiddenKeys) {
-            if ($Keys -like "*${f}*") { $hit += $f }
+            if ($Keys.IndexOf($f, [System.StringComparison]::OrdinalIgnoreCase) -ge 0) { $hit += $f }
         }
     }
 
@@ -79,7 +79,7 @@ function Send-GsKeys {
             1)
         if ($answer -ne 0) {
             Write-GsAudit -Session $Session -Action 'send' `
-                -Args @{ keys = $Keys; forbidden = $hit } `
+                -Arguments @{ keys = $Keys; forbidden = $hit } `
                 -Result @{ canceled = $true; reason = 'forbidden-key denied' } `
                 -DurationMs 0 -Ok $true
             Write-Verbose "Send-GsKeys canceled by operator (forbidden key)."
@@ -89,7 +89,7 @@ function Send-GsKeys {
 
     if (-not $PSCmdlet.ShouldProcess("session=$($Session.Tag) keys='$Keys'", 'Send-GsKeys')) {
         Write-GsAudit -Session $Session -Action 'send' `
-            -Args @{ keys = $Keys } `
+            -Arguments @{ keys = $Keys } `
             -Result @{ canceled = $true; reason = 'ShouldProcess denied' } `
             -DurationMs 0 -Ok $true
         return
@@ -100,14 +100,14 @@ function Send-GsKeys {
         $Session.Interop.SendKey($Keys)
         $sw.Stop()
         Write-GsAudit -Session $Session -Action 'send' `
-            -Args @{ keys = $Keys; forbidden = $hit } `
+            -Arguments @{ keys = $Keys; forbidden = $hit } `
             -Result @{ sent = $true } `
             -DurationMs $sw.ElapsedMilliseconds -Ok $true
     }
     catch {
         $sw.Stop()
         Write-GsAudit -Session $Session -Action 'send' `
-            -Args @{ keys = $Keys; forbidden = $hit } `
+            -Arguments @{ keys = $Keys; forbidden = $hit } `
             -DurationMs $sw.ElapsedMilliseconds -Ok $false `
             -ErrorMessage $_.Exception.Message
         throw

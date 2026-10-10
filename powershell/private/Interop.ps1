@@ -155,5 +155,5 @@ namespace GreenScript
 }
 '@
 
-    Add-Type -TypeDefinition $cs -Language CSharp -ReferencedAssemblies 'System'
+    Add-Type -TypeDefinition $cs -Language CSharp
 }

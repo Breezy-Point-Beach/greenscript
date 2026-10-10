@@ -85,7 +85,7 @@ namespace GreenScript
     }
 }
 '@
-    Add-Type -TypeDefinition $cs -Language CSharp -ReferencedAssemblies 'System'
+    Add-Type -TypeDefinition $cs -Language CSharp
     $script:IEWinTypeLoaded = $true
 }
 
@@ -122,13 +122,21 @@ function Get-GsPopup {
 
     Initialize-GsPopupInterop
 
+    # The window walk and DOM access below talk to live Win32 / MSHTML COM
+    # objects whose member surface varies by window and element type. The
+    # proven standalone script ran without strict mode and with
+    # SilentlyContinue; mirror that in this function's scope only, so an odd
+    # window degrades to "skipped" rather than an exception.
+    Set-StrictMode -Off
+    $ErrorActionPreference = 'SilentlyContinue'
+
     $sw = [System.Diagnostics.Stopwatch]::StartNew()
     try {
         $proc = Get-Process -Name $ProcessName -ErrorAction SilentlyContinue | Select-Object -First 1
         if (-not $proc) {
             $sw.Stop()
             Write-GsAudit -Session $null -Action 'popup' `
-                -Args @{ processName = $ProcessName } `
+                -Arguments @{ processName = $ProcessName } `
                 -Result @{ popups = 0; reason = 'host-process-not-running' } `
                 -DurationMs $sw.ElapsedMilliseconds -Ok $true
             return @()
@@ -186,7 +194,7 @@ function Get-GsPopup {
         }
         $sw.Stop()
         Write-GsAudit -Session $null -Action 'popup' `
-            -Args @{ processName = $ProcessName; urlFilter = $UrlFilter } `
+            -Arguments @{ processName = $ProcessName; urlFilter = $UrlFilter } `
             -Result @{ popups = $results.Count } `
             -DurationMs $sw.ElapsedMilliseconds -Ok $true
         return $results
@@ -194,7 +202,7 @@ function Get-GsPopup {
     catch {
         $sw.Stop()
         Write-GsAudit -Session $null -Action 'popup' `
-            -Args @{ processName = $ProcessName } `
+            -Arguments @{ processName = $ProcessName } `
             -DurationMs $sw.ElapsedMilliseconds -Ok $false `
             -ErrorMessage $_.Exception.Message
         throw
@@ -230,6 +238,12 @@ function Read-GsPopup {
     )
 
     process {
+        # See Get-GsPopup: the DOM walk mirrors the proven standalone script's
+        # lenient error handling, scoped to this function only. A missing or
+        # odd attribute yields an empty label instead of a terminating error.
+        Set-StrictMode -Off
+        $ErrorActionPreference = 'SilentlyContinue'
+
         $sw = [System.Diagnostics.Stopwatch]::StartNew()
         try {
             $doc = $Popup.Document
@@ -311,7 +325,7 @@ function Read-GsPopup {
             }
             $sw.Stop()
             Write-GsAudit -Session $null -Action 'popup-read' `
-                -Args @{ title = $result.Title; url = $result.Url } `
+                -Arguments @{ title = $result.Title; url = $result.Url } `
                 -Result @{ fields = $fields.Count; buttons = $buttons.Count; textLen = $text.Length } `
                 -DurationMs $sw.ElapsedMilliseconds -Ok $true
             return $result

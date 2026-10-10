@@ -47,8 +47,10 @@ Read the terminal buffer and return rows.
 Read-GsScreen -Session <handle> [-Row <int>] [-Col <int>] [-Length <int>]
 ```
 
-With no `-Row`, returns every row up to `Session.Rows`. With `-Row`, returns a
-single row. `-Col` and `-Length` take a partial slice.
+`-Row 0` (the default) returns every row up to `Session.Rows`; any other value
+returns that single row. `-Col` sets the start column. `-Length 0` (the
+default) reads to the end of the row; any other value reads that many
+characters.
 
 Each row is `pscustomobject` with `Row`, `Col`, `Length`, `Text`.
 
@@ -69,6 +71,10 @@ $pos = Get-GsCursor -Session $s
 "cursor is at row $($pos.Row), col $($pos.Col)"
 ```
 
+> **Unverified against a live session.** `GetCursor` is the one BZWhll call
+> the original hand-built scripts never exercised. The ByRef marshaling in the
+> C# shim follows Rocket's documented pattern, but please report what you see.
+
 ---
 
 ## `Send-GsKeys`
@@ -88,9 +94,16 @@ Key sequences use BlueZone's native notation:
 **Approval model.** `[CmdletBinding(SupportsShouldProcess)]` with
 `ConfirmImpact='High'` means interactive sessions always prompt unless
 `-Confirm:$false` is passed. In addition, if `-Keys` contains any token from
-`-ForbiddenKeys` (default `<F3>`, `<F5>`, `<SF6>` — the Save, New, Update keys
-on common CDK Drive screens), a second prompt fires regardless of
-`-Confirm:$false`. Use `-Force` to bypass the forbidden-key prompt.
+`-ForbiddenKeys` (matched case-insensitively; default `<F3>`, `<F5>`, `<SF6>`,
+a conservative set drawn from dealer-DMS screens where those keys save, create,
+or update), a second prompt fires regardless of `-Confirm:$false`. Use `-Force`
+to bypass the forbidden-key prompt, and tune the list per host and screen —
+F-key meanings differ between screens even on the same system.
+
+**Scripting note.** On Windows PowerShell 5.1, `-Confirm:$false` or `-WhatIf`
+passed to *your* script does not propagate into module cmdlets it calls. Pass
+`-Confirm:$false` (or `-WhatIf`) to each `Send-GsKeys` call explicitly. The
+example scripts do this through an `-Unattended` switch.
 
 Returns nothing on success. Writes an audit record either way.
 
@@ -189,7 +202,7 @@ alongside the keystroke-level records the other cmdlets write.
 
 ```powershell
 Write-GsAudit -Session <handle> -Action <string>
-              [-Args <hashtable>] [-Result <hashtable>]
+              [-Arguments <hashtable>] [-Result <hashtable>]
               [-DurationMs <int>] [-Ok <bool>] [-ErrorMessage <string>]
               [-Cmd <string>]
 ```

@@ -119,8 +119,9 @@ outside the audit log directory the user configures.
 The approval gate on `Send-GsKeys` is enforced through PowerShell's standard
 `SupportsShouldProcess` mechanism. You get the usual `-WhatIf` / `-Confirm`
 semantics, plus a configurable deny-list of key sequences that always prompt
-regardless of `-Confirm:$false` (default list: `<F3>`, `<F5>`, `<SF6>` — the
-Save, New, and Update keys on common CDK Drive screens).
+regardless of `-Confirm:$false`. The default list (`<F3>`, `<F5>`, `<SF6>`) is
+a conservative starting point drawn from dealer-DMS screens where those keys
+save, create, or update; tune it to whatever host you drive.
 
 See [docs/security.md](docs/security.md) for the full model.
 
@@ -130,8 +131,8 @@ See [docs/security.md](docs/security.md) for the full model.
 - Microsoft Power Automate Desktop's terminal emulation actions (same
   `ehlapi64.dll` HLLAPI surface)
 - IBM EHLLAPI specification
-- The 2014-era [hllapi-node](https://github.com/Chris-Cullins/hllapi-node)
-  project (CoffeeScript, abandoned)
+- The [hllapi-node](https://github.com/Chris-Cullins/hllapi-node) project
+  (CoffeeScript, unmaintained since 2014)
 
 `greenscript` is not a fork of any of these. It is a modern PowerShell/VBA
 interpretation of the same automation patterns.

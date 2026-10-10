@@ -37,15 +37,17 @@ On top of `ShouldProcess`, a **forbidden-key list** fires a second, mandatory
 prompt whenever the key sequence contains any of the configured tokens. The
 default list is:
 
-| Token    | Common meaning on CDK Drive                                |
+| Token    | Typical meaning on dealer-DMS hosts (e.g. CDK Drive)        |
 |----------|-------------------------------------------------------------|
 | `<F3>`   | Exit / Save (depending on screen) — potentially destructive |
 | `<F5>`   | New — may clear or create a record                          |
 | `<SF6>`  | Update — writes to the DMS                                  |
 
-Pass `-ForbiddenKeys @()` to disable the second prompt for a specific call, or
-`-Force` to bypass it. The ShouldProcess prompt remains active unless
-`-Confirm:$false` is passed as well.
+Tokens are matched case-insensitively. Pass `-ForbiddenKeys @()` to disable the
+second prompt for a specific call, or `-Force` to bypass it; pass your own list
+to match the host you drive, since F-key meanings differ between screens even
+on one system. The ShouldProcess prompt remains active unless `-Confirm:$false`
+is passed as well.
 
 The VBA module (`vba\GreenScript.bas`) implements the same forbidden-key
 pattern with a `MsgBox` approval prompt. The default forbidden tokens are

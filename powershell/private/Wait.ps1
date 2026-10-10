@@ -59,7 +59,7 @@ function Wait-GsText {
             DurationMs  = [int]$sw.ElapsedMilliseconds
         }
         Write-GsAudit -Session $Session -Action 'wait' `
-            -Args @{ text = $Text; row = $Row; col = $Col; timeoutSeconds = $TimeoutSeconds } `
+            -Arguments @{ text = $Text; row = $Row; col = $Col; timeoutSeconds = $TimeoutSeconds } `
             -Result @{ found = $found; statusCode = $code } `
             -DurationMs $sw.ElapsedMilliseconds -Ok $true
         return $result
@@ -67,7 +67,7 @@ function Wait-GsText {
     catch {
         $sw.Stop()
         Write-GsAudit -Session $Session -Action 'wait' `
-            -Args @{ text = $Text; row = $Row; col = $Col; timeoutSeconds = $TimeoutSeconds } `
+            -Arguments @{ text = $Text; row = $Row; col = $Col; timeoutSeconds = $TimeoutSeconds } `
             -DurationMs $sw.ElapsedMilliseconds -Ok $false `
             -ErrorMessage $_.Exception.Message
         throw

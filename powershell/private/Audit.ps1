@@ -93,7 +93,7 @@ function Write-GsAudit {
     .PARAMETER Action
     A short verb (connect, disconnect, read, cursor, send, wait, popup, event).
 
-    .PARAMETER Args
+    .PARAMETER Arguments
     Hashtable of arguments relevant to the action.
 
     .PARAMETER Result
@@ -115,7 +115,7 @@ function Write-GsAudit {
     param(
         [AllowNull()] [object] $Session,
         [Parameter(Mandatory)] [string] $Action,
-        [hashtable] $Args = @{},
+        [hashtable] $Arguments = @{},
         [hashtable] $Result = @{},
         [int] $DurationMs = 0,
         [bool] $Ok = $true,
@@ -134,7 +134,7 @@ function Write-GsAudit {
         session = if ($Session) { [string]$Session.Tag } else { $null }
         cmd     = $Cmd
         action  = $Action
-        args    = $Args
+        args    = $Arguments
         result  = $Result
         ms      = $DurationMs
         ok      = $Ok

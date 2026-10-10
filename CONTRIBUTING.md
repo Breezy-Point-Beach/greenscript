@@ -31,7 +31,7 @@ from a Windows workstation without installing a third-party runtime?"
 
 1. Clone the repo on a Windows machine with a BlueZone session you can safely
    attach to (a test session, not production).
-2. From an elevated 32-bit PowerShell (`C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe`):
+2. From a 32-bit PowerShell (`C:\Windows\SysWOW64\WindowsPowerShell\v1.0\powershell.exe`; no elevation needed):
 
    ```powershell
    Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
@@ -68,16 +68,16 @@ Please include:
 - Your Windows version (`[System.Environment]::OSVersion.VersionString`).
 - Your PowerShell host and version (`$Host.Name`, `$PSVersionTable.PSVersion`,
   and `[System.IntPtr]::Size` — 4 means 32-bit, 8 means 64-bit).
-- Your BlueZone version (visible under Help → About in BlueZone, or by reading
-  `(Get-Item (Get-ItemProperty 'HKLM:\SOFTWARE\WOW6432Node\Rocket Software\BlueZone' -Name InstallPath).InstallPath).Name`).
+- Your BlueZone version (Help → About in BlueZone).
 - A minimal `.ps1` that reproduces the problem.
 - The relevant stretch of the JSONL audit log, with any sensitive values redacted.
 
 ## Security
 
 If you believe you have found a security issue, please do not file a public
-issue. Email `security@breezypointbeach.example` (replace with your actual
-disclosure address before publishing).
+issue. Use GitHub's private vulnerability reporting instead: open the
+repository's **Security** tab and choose **Report a vulnerability**. Reports
+go only to the maintainers.
 
 ## License
 

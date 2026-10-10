@@ -28,7 +28,14 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\examples\01-read-screen.ps
 ## Safety
 
 All example scripts attach to the **active** BlueZone session. Make sure the
-session you want to drive is the one in front. The `03-sales-tax-upload.ps1`
-example sends keystrokes; it uses `-Confirm` by default so every row prompts.
-Pass `-Confirm:$false` only after you have reviewed the CSV and understand
-what will land in the host.
+session you want to drive is the one in front.
+
+`02-recall-quote.ps1` and `03-sales-tax-upload.ps1` send keystrokes, and every
+send prompts by default. Pass `-Unattended` to skip the per-send prompt — only
+after you have reviewed what will land in the host (for `03`, run it with
+`-DryRun` first to see every keystroke it would send). The forbidden-key prompt
+in `Send-GsKeys` applies regardless.
+
+The navigation codes, header text, and row/column positions in `02` and `03`
+are illustrations from one dealer-DMS layout; every one of them is a parameter
+so you can point the scripts at your own screens.

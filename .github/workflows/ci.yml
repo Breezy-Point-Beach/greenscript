@@ -8,8 +8,9 @@
 #   1. The module parses cleanly on Windows PowerShell 5.1.
 #   2. All .ps1 and .psm1 files parse without errors.
 #   3. PSScriptAnalyzer runs clean (warnings allowed with explicit reason).
-# Behavioral tests against a mock COM shim live in tests/ (not shipped in
-# v0.1) and will be wired into this workflow when they exist.
+#   4. The Pester suite in tests/ passes. It drives every cmdlet through a
+#      fake interop object, so it needs no BlueZone install; it cannot prove
+#      the live COM calls, which examples/01-read-screen.ps1 covers by hand.
 
 name: ci
 
@@ -75,4 +76,21 @@ jobs:
               }
           } else {
               Write-Host "Analyzer: clean." -ForegroundColor Green
+          }
+
+      - name: Install Pester 5
+        shell: powershell
+        run: |
+          Install-Module -Name Pester -MinimumVersion 5.0 -Scope CurrentUser -Force -SkipPublisherCheck
+          Import-Module Pester -MinimumVersion 5.0
+          Write-Host ("Pester {0}" -f (Get-Module Pester).Version)
+
+      - name: Pester
+        shell: powershell
+        run: |
+          Import-Module Pester -MinimumVersion 5.0
+          $r = Invoke-Pester -Path .\tests -Output Detailed -PassThru
+          if ($r.FailedCount -gt 0) {
+              Write-Host "$($r.FailedCount) test(s) failed." -ForegroundColor Red
+              exit 1
           }
