@@ -9,8 +9,8 @@ logging built in, using only the runtimes shipped with Windows.
 
 ## What it is
 
-Terminal emulators like Rocket BlueZone, IBM Personal Communications, and Micro
-Focus Reflection expose automation surfaces that have been used for decades to
+Terminal emulators like Rocket BlueZone, IBM Personal Communications, and
+Reflection Desktop expose automation surfaces that have been used for decades to
 script against the mainframe, midrange, and legacy applications behind them.
 `greenscript` wraps those surfaces in a small, intentional PowerShell module and
 VBA module, adds an approval model and a JSONL audit log, and ships recipe
@@ -29,6 +29,48 @@ than raw COM calls and a safer execution model than hand-rolled macros.
 - Not an integration product. It drives the terminal emulator the operator is
   already running, under the operator's own credentials, from their own
   workstation.
+
+## Where it applies
+
+`greenscript` binds to the terminal emulator, not to any particular host, so
+it applies wherever people still do their job in a green screen through a
+Windows emulator. Two layers matter.
+
+**Emulators** — what the module actually talks to:
+
+| Emulator                                                                                   | Status                                                                                      |
+|--------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
+| Rocket BlueZone (3270, 5250, VT100/220/420, and Tandem 6530 sessions)                      | Supported today, through the `BZWhll` COM object                                            |
+| IBM Personal Communications, Reflection Desktop, Extra! X-treme, Rumba+, HostExplorer, and other EHLLAPI-capable emulators | Planned: HLLAPI driver (`ehlapi32/64.dll`), the same interface Microsoft Power Automate uses |
+
+**Host systems** — what people drive through those emulators. Typical examples
+by industry; inclusion means "commonly accessed through a terminal emulator"
+and nothing more. `greenscript` has so far been exercised only against CDK
+Drive.
+
+- **Automotive retail** — dealer management systems such as CDK Drive.
+- **Banking and credit unions** — IBM i cores such as Jack Henry SilverLake
+  and CU*BASE; mainframe cores such as FIS Systematics.
+- **Insurance** — policy administration and claims on z/OS (CICS / IMS);
+  RPG applications on IBM i.
+- **Healthcare** — the VA's VistA and IHS RPMS "roll-and-scroll" interfaces;
+  legacy lab and patient-accounting systems.
+- **Government** — unemployment insurance, DMV, Medicaid (MMIS), tax, and
+  court case-management systems.
+- **Distribution, manufacturing, ERP** — JD Edwards World; Infor XA (MAPICS)
+  and LX (BPCS); VAI S2K; Epicor Eclipse and other UniVerse / MultiValue
+  applications; older Manhattan WMS (PkMS).
+- **Retail** — merchandising and back-office systems on IBM i such as
+  Island Pacific.
+- **Travel and logistics** — TPF-based airline reservation and cargo
+  systems; rail and freight legacy systems.
+- **Utilities and telecom** — customer information and billing systems on
+  the mainframe.
+
+Rule of thumb: if your users open a terminal emulator to do their job, the
+screens are a fixed character grid (24×80 or 27×132), and the emulator has a
+macro recorder, the system is a fit. [docs/compatibility.md](docs/compatibility.md)
+has the longer list and a checklist.
 
 ## Why "native Windows"
 

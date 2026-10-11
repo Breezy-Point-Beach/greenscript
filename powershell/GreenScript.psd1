@@ -40,7 +40,7 @@
 
     PrivateData = @{
         PSData = @{
-            Tags         = @('BlueZone', 'Terminal', 'Emulator', '3270', '5250', 'Automation', 'HLLAPI', 'LegaSuite', 'Mainframe')
+            Tags         = @('BlueZone', 'Terminal', 'Emulator', '3270', '5250', 'VT100', 'Automation', 'HLLAPI', 'EHLLAPI', 'LegaSuite', 'Mainframe', 'IBMi', 'AS400', 'CICS', 'GreenScreen')
             LicenseUri   = 'https://opensource.org/licenses/MIT'
             ProjectUri   = 'https://github.com/Breezy-Point-Beach/greenscript'
             ReleaseNotes = 'v0.1.0 — initial scaffold. BZWhll COM driver, LegaSuite popup reader via IHTMLDocument2, JSONL audit log, approval gate on key sends. API will change before 1.0.'
