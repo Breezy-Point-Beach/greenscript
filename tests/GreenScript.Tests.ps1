@@ -190,6 +190,8 @@ Describe 'Send-GsKeys' {
         $rec = Get-LastAudit
         $rec.action | Should -Be 'send'
         $rec.result.sent | Should -BeTrue
+        # Key sequences must be greppable in the raw log, not <-escaped.
+        (Get-Content -LiteralPath $script:TmpLog | Select-Object -Last 1) | Should -Match 'WAQ<Enter>'
     }
 
     It 'does not send under -WhatIf' {

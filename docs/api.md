@@ -71,9 +71,9 @@ $pos = Get-GsCursor -Session $s
 "cursor is at row $($pos.Row), col $($pos.Col)"
 ```
 
-> **Unverified against a live session.** `GetCursor` is the one BZWhll call
-> the original hand-built scripts never exercised. The ByRef marshaling in the
-> C# shim follows Rocket's documented pattern, but please report what you see.
+Verified live against CDK Drive in October 2026: with the cursor in the
+`Account:` input of the User Security Menu it returned row 4, col 19 — exactly
+where the field sits on screen.
 
 ---
 
@@ -246,3 +246,10 @@ applicable:
 ```
 
 `err` is present when `ok` is `false`.
+
+`ts` is always UTC (the `Z` suffix). The default log *filename* rotates on the
+workstation's local date, so late-evening entries in US time zones carry the
+next day's UTC date inside a file named for the local day. `seq` restarts at 1
+each time the module is imported. The `<`, `>`, `&` and `'` characters are
+written literally (PowerShell 5.1 would otherwise escape them as `<` and
+so on), so `Select-String '<F3>'` against the log works.

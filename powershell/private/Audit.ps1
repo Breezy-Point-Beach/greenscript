@@ -145,6 +145,10 @@ function Write-GsAudit {
     if (-not $Ok -and $ErrorMessage) { $record.err = $ErrorMessage }
 
     $json = $record | ConvertTo-Json -Compress -Depth 6
+    # PowerShell 5.1 escapes < > & ' as < etc. They only ever occur inside
+    # string values here, so restoring them keeps the JSON valid and makes the
+    # log greppable for key sequences such as <F3>.
+    $json = $json -replace '\\u003c', '<' -replace '\\u003e', '>' -replace '\\u0026', '&' -replace '\\u0027', "'"
     $path = Get-GsAuditPath
     # Append atomically; UTF8 without BOM to keep JSONL clean.
     [System.IO.File]::AppendAllText(

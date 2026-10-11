@@ -36,8 +36,9 @@ Two further surfaces are emulator-independent:
 The hosts below are commonly accessed through one of the emulators above.
 Listing a system here means exactly that and nothing more — no endorsement,
 no partnership, no claim that its vendor supports third-party automation.
-Check your own license terms. `greenscript` has so far been exercised only
-against **CDK Drive**; everything else is "same kind of thing".
+Check your own license terms. `greenscript` has been verified live only
+against **CDK Drive** (see the README's *Verification status*); everything
+else is "same kind of thing".
 
 ### Automotive retail
 

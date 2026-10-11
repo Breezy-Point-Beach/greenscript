@@ -45,8 +45,8 @@ Windows emulator. Two layers matter.
 
 **Host systems** — what people drive through those emulators. Typical examples
 by industry; inclusion means "commonly accessed through a terminal emulator"
-and nothing more. `greenscript` has so far been exercised only against CDK
-Drive.
+and nothing more. `greenscript` has been verified live only against CDK Drive;
+see *Verification status* below.
 
 - **Automotive retail** — dealer management systems such as CDK Drive.
 - **Banking and credit unions** — IBM i cores such as Jack Henry SilverLake
@@ -71,6 +71,30 @@ Rule of thumb: if your users open a terminal emulator to do their job, the
 screens are a fixed character grid (24×80 or 27×132), and the emulator has a
 macro recorder, the system is a fit. [docs/compatibility.md](docs/compatibility.md)
 has the longer list and a checklist.
+
+## Verification status
+
+Verified live on 10–11 October 2026 against CDK Drive (BlueZone client) on
+Windows 11, Windows PowerShell 5.1 (32-bit host): `Connect-GsSession`,
+`Read-GsScreen` (full and partial reads), `Get-GsCursor`, `Send-GsKeys`
+(text, `<Enter>`, `<F1>`), `Wait-GsText` (both the found and the timeout
+paths), `Disconnect-GsSession`, and `examples/01-read-screen.ps1`.
+`Read-GsPopup` is unchanged from the standalone script it was factored from,
+which was verified against the same client's web popups. The Pester suite
+covers the cmdlet logic on every push.
+
+## Roadmap
+
+In rough order:
+
+- `Find-GsText` and `Wait-GsText -Anywhere` — search the whole buffer instead
+  of an exact row and column (BlueZone's `WaitForText` is anchored).
+- Per-screen key policy — F-key meanings change per screen and even per
+  field; the global forbidden list is a blunt v0.1 instrument.
+- HLLAPI driver (`ehlapi32/64.dll`) — other emulators, and a 64-bit path.
+- Print-capture and SFTP adapters — reports and bulk data without screen
+  reads.
+- Audit-log masking — redact configured fields before they reach disk.
 
 ## Why "native Windows"
 
